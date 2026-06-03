@@ -1,6 +1,6 @@
 # Projeto Programação para Web 2 (2026.1)
 
-O desenvolvimento desse projeto deverá ser focado em desenvolver uma aplicação _frontend_ para **Gestão Financeira Pessoal**. Cada **grupo de até 4 alunos** deve entregar sua aplicação web funcionando, praticando todos os tópicos da stack vistos em cada etapa.
+O desenvolvimento desse projeto deverá ser focado em desenvolver uma aplicação _frontend_ para **Gestão Financeira Pessoal**. Cada **grupo de até 5 alunos** deve entregar sua aplicação web funcionando, praticando todos os tópicos da stack vistos em cada etapa.
 
 Os serviços de _backend_ já estão construídos com Java 21 e Spring Boot. Não é necessário entendimento dessa API e esta será mantida pelo professor da disciplina caso sejam necessários alguns ajustes. Verifique as [instruções de execução do projeto](INSTRUCOES.md) para mais detalhes.
 
