@@ -21,7 +21,7 @@ Abaixo estão as instruções para executar cada uma delas. Certifique-se de ter
    ./mvnw spring-boot:run
    ```
 
-   O backend estará disponível em `http://localhost:8080`. A documentação da API estará disponível em `http://localhost:8080/swagger-ui.html`.
+   O backend estará disponível em `http://localhost:8080`. A documentação da API estará disponível em `http://localhost:8080/swagger-ui/index.html`.
 
 Não é necessário utilizar PostgreSQL ou qualquer container. Essa aplicação utiliza um banco de dados em memória (H2) que é inicializado automaticamente com dados de exemplo a cada execução.
 
