@@ -3,6 +3,7 @@
   grid-template-columns: 240px minmax(0, 1fr);
   width: 100%;
   min-height: 100svh;
+  background: #fff;
   text-align: left;
 }
 
@@ -102,6 +103,8 @@
 .dashboard-layout__main {
   width: 100%;
   min-width: 0;
+  max-width: 1440px;
+  margin-inline: auto;
   padding: 32px;
   outline: none;
 }

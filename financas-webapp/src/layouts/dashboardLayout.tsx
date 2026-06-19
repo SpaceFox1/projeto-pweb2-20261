@@ -14,12 +14,12 @@ function DashboardIcon(): React.ReactElement {
 
 export function DashboardLayout(): React.ReactElement {
   return (
-    <div className="dashboard-layout">
+    <div className="dashboard-layout" data-layout="dashboard">
       <a className="dashboard-layout__skip-link" href="#dashboard-content">
         Pular para o conteúdo
       </a>
 
-      <aside className="dashboard-layout__sidebar">
+      <aside className="dashboard-layout__sidebar" aria-label="Menu do dashboard">
         <div className="dashboard-layout__brand">
           <span className="dashboard-layout__brand-mark" aria-hidden="true">F</span>
           <span>Finanças</span>
@@ -41,7 +41,12 @@ export function DashboardLayout(): React.ReactElement {
         </nav>
       </aside>
 
-      <main id="dashboard-content" className="dashboard-layout__main" tabIndex={-1}>
+      <main
+        id="dashboard-content"
+        className="dashboard-layout__main"
+        tabIndex={-1}
+        aria-label="Conteúdo do dashboard"
+      >
         <Outlet />
       </main>
     </div>
