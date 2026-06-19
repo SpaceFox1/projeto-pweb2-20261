@@ -59,7 +59,7 @@ export function DashboardPage(): React.ReactElement {
   const currentMonth = monthFormatter.format(new Date());
 
   return (
-    <main className="dashboard">
+    <div className="dashboard">
       <header className="dashboard__header">
         <div>
           <p className="dashboard__eyebrow">Visão geral</p>
@@ -164,6 +164,6 @@ export function DashboardPage(): React.ReactElement {
           </div>
         )}
       </section>
-    </main>
+    </div>
   );
 }
