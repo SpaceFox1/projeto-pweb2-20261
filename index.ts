@@ -1,6 +1,6 @@
 export { AuthLayout } from './authLayout';
 
-// Layout compartilhado que recebe as páginas filhas por meio do Outlet.
+// Estrutura visual reutilizável pelas páginas internas do dashboard.
 export { DashboardLayout } from './dashboardLayout';
 
 export { MainLayout } from './mainLayout';
