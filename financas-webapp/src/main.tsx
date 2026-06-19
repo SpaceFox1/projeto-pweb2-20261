@@ -7,6 +7,7 @@ import { store } from './store/store.ts';
 import { BrowserRouter, Route, Routes } from 'react-router';
 import { AuthLayout, MainLayout } from './layouts/index.ts';
 import { LoginPage, RegisterPage, HomePage } from './routes/index.ts';
+import { ProtectedRoute } from './components/ProtectedRoute.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -19,7 +20,7 @@ createRoot(document.getElementById('root')!).render(
             <Route path="register" element={<RegisterPage />} />
           </Route>
 
-          <Route element={<MainLayout />}>
+          <Route element={<ProtectedRoute><MainLayout /></ProtectedRoute>}>
             <Route path="/" element={<HomePage />} />
           </Route>
         </Routes>
