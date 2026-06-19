@@ -1,0 +1,138 @@
+.transactions-page {
+  width: min(1120px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 56px 0;
+  color: #26332c;
+  text-align: left;
+}
+
+.transactions-page,
+.transactions-page * {
+  box-sizing: border-box;
+}
+
+.transactions-page__header {
+  margin-bottom: 28px;
+}
+
+.transactions-page__header h1 {
+  margin: 5px 0 8px;
+  color: #173e2e;
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+}
+
+.transactions-page__header > p:last-child {
+  color: #6c7870;
+}
+
+.transactions-page__eyebrow {
+  color: #236b4d;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.transactions-page__table-wrapper {
+  overflow-x: auto;
+  border: 1px solid #dce4df;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 12px 34px rgba(23, 62, 46, 0.08);
+}
+
+.transactions-page__table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+}
+
+.transactions-page__table th,
+.transactions-page__table td {
+  padding: 17px 20px;
+  border-bottom: 1px solid #e8eeea;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.transactions-page__table th {
+  color: #68766d;
+  background: #f7faf8;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.transactions-page__table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.transactions-page__table tbody tr:hover {
+  background: #fbfdfb;
+}
+
+.transactions-page__type {
+  display: inline-flex;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.transactions-page__type--income {
+  color: #17633f;
+  background: #dff3e8;
+}
+
+.transactions-page__type--expense {
+  color: #9c3434;
+  background: #fbe5e5;
+}
+
+.transactions-page__amount {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.transactions-page__amount--income {
+  color: #17633f;
+}
+
+.transactions-page__amount--expense {
+  color: #9c3434;
+}
+
+.transactions-page__description {
+  max-width: 320px;
+  color: #6c7870;
+}
+
+.transactions-page__status {
+  padding: 28px;
+  border: 1px solid #dce4df;
+  border-radius: 14px;
+  color: #6c7870;
+  background: #f7faf8;
+  text-align: center;
+}
+
+.transactions-page__status--error {
+  border-color: #edcaca;
+  color: #9c3434;
+  background: #fff5f5;
+}
+
+@media (max-width: 640px) {
+  .transactions-page {
+    width: min(100% - 28px, 1120px);
+    padding: 36px 0;
+  }
+
+  .transactions-page__table th,
+  .transactions-page__table td {
+    padding: 14px 16px;
+  }
+}
