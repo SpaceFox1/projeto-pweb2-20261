@@ -1,0 +1,31 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-foreground: var(--text);
+  --color-foreground-heading: var(--text-h);
+  --color-background: var(--bg);
+  --color-card: var(--card);
+  --color-border: var(--border);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  
+  --color-accent: var(--accent);
+  --color-accent-background: var(--accent-bg);
+  --color-accent-border: var(--accent-border);
+  
+  --color-destructive: var(--destructive);
+  --color-success: var(--success);
+  
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  
+  --font-family-sans: var(--sans);
+  --font-family-heading: var(--heading);
+  --font-family-mono: var(--mono);
+  
+  --radius-md: var(--radius);
+  --shadow-md: var(--shadow);
+}
