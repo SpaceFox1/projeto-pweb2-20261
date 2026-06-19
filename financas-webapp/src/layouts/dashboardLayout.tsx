@@ -1,4 +1,5 @@
 import { NavLink, Outlet } from 'react-router';
+import './dashboardLayout.css';
 
 function DashboardIcon(): React.ReactElement {
   return (
