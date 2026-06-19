@@ -1,0 +1,191 @@
+/* Container Principal */
+.add-transaction-container {
+  background-color: #F8FAFC;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: sans-serif;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+/* Card Central (Estilo Figma) */
+.transaction-card {
+  background-color: #FFFFFF;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(11, 21, 40, 0.05);
+  width: 100%;
+  maxWidth: 480px;
+  box-sizing: border-box;
+}
+
+/* Cabeçalho */
+.transaction-card__header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.transaction-card__logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.transaction-card__logo-icon {
+  color: #10B981;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.transaction-card__logo-text {
+  font-weight: 700;
+  font-size: 18px;
+  color: #0B1528;
+  letter-spacing: -0.5px;
+}
+
+.transaction-card__logo-text span {
+  color: #10B981;
+}
+
+.transaction-card__title {
+  color: #0B1528;
+  font-size: 24px;
+  margin: 0 0 6px 0;
+  font-weight: 700;
+}
+
+.transaction-card__subtitle {
+  color: #64748B;
+  margin: 0;
+  font-size: 14px;
+}
+
+/* Alertas de Erro */
+.transaction-card__error {
+  background-color: #FEE2E2;
+  color: #EF4444;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Formulário e Inputs */
+.transaction-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.transaction-form__group {
+  display: flex;
+  flex-direction: column;
+}
+
+.transaction-form__label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #334155;
+}
+
+.transaction-form__input {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid #E2E8F0;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.transaction-form__input:focus {
+  border-color: #0B1528;
+}
+
+/* Linha com múltiplos inputs (Valor e Data) */
+.transaction-form__row {
+  display: flex;
+  gap: 16px;
+}
+
+.transaction-form__row .transaction-form__group {
+  flex: 1;
+}
+
+/* Alternadores de Tipo (Receitas e Despesas) */
+.type-toggle-group {
+  display: flex;
+  gap: 12px;
+}
+
+.type-toggle-btn {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  background-color: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  color: #475569;
+}
+
+.type-toggle-btn--income.active {
+  border: 2px solid #10B981;
+  background-color: #ECFDF5;
+  color: #047857;
+}
+
+.type-toggle-btn--expense.active {
+  border: 2px solid #EF4444;
+  background-color: #FEF2F2;
+  color: #B91C1C;
+}
+
+/* Botões de Submissão e Ação */
+.transaction-form__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 14px;
+  background-color: #0B1528;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-submit:disabled {
+  background-color: #94A3B8;
+  cursor: not-allowed;
+}
+
+.btn-cancel {
+  width: 100%;
+  padding: 12px;
+  background-color: transparent;
+  color: #64748B;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
