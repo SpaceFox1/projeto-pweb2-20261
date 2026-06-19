@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { apiService } from '../services/apiService';
 import type { TransactionType } from '../store/slices/transactionsSlice';
+import './addTransaction.css';
 
 interface TransactionPayload {
   description: string;
   amount: number;
   type: TransactionType;
   categoryName: string;
-  date: string; // Formato YYYY-MM-DD
+  date: string;
 }
 
 export function AddTransactionPage(): React.ReactElement {
@@ -18,16 +19,15 @@ export function AddTransactionPage(): React.ReactElement {
 
   const [description, setDescription] = useState('');
   const [amount, setAmount] = useState('');
-  const [type, setType] = useState<'INCOME' | 'EXPENSE'>('INCOME');
+  const [type, setType] = useState<TransactionType>('INCOME');
   const [categoryName, setCategoryName] = useState('');
-  const [date, setDate] = useState(new Date().toISOString().split('T')[0]); // Data do dia atual por padrão
+  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
-    // Montagem do payload
     const payload: TransactionPayload = {
       description,
       amount: parseFloat(amount),
@@ -37,11 +37,8 @@ export function AddTransactionPage(): React.ReactElement {
     };
 
     try {
-
       await apiService.post('/transactions', payload);
-      
-      // Redireciona o usuário de volta para a rota principal após o sucesso
-      navigate('/transactions');
+      navigate('/transactions'); 
     } catch (err) {
       console.error(err);
       setError('Falha ao cadastrar transação. Verifique os dados informados.');
@@ -51,45 +48,42 @@ export function AddTransactionPage(): React.ReactElement {
   };
 
   return (
-    <div style={{ backgroundColor: '#F8FAFC', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', fontFamily: 'sans-serif', padding: '24px' }}>
-      
-      {/* Container Central - Mesma estrutura limpa do Card de Login do Figma */}
-      <div style={{ backgroundColor: '#FFFFFF', padding: '40px', borderRadius: '16px', boxShadow: '0 4px 20px rgba(11, 21, 40, 0.05)', width: '100%', maxWidth: '480px', boxSizing: 'border-box' }}>
+    <div className="add-transaction-container">
+      <div className="transaction-card">
         
-        {/* Cabeçalho da Página */}
-        <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '6px', marginBottom: '12px' }}>
-            <span style={{ color: '#10B981', fontWeight: 'bold', fontSize: '20px' }}>↗</span>
-            <span style={{ fontWeight: 700, fontSize: '18px', color: '#0B1528', letterSpacing: '-0.5px' }}>Finance<span style={{ color: '#10B981' }}>Flow</span></span>
+        {/* Cabeçalho */}
+        <header className="transaction-card__header">
+          <div className="transaction-card__logo">
+            <span className="transaction-card__logo-icon">↗</span>
+            <span className="transaction-card__logo-text">Finance<span>Flow</span></span>
           </div>
-          <h1 style={{ color: '#0B1528', fontSize: '24px', margin: '0 0 6px 0', fontWeight: 700 }}>Nova Transação</h1>
-          <p style={{ color: '#64748B', margin: 0, fontSize: '14px' }}>Insira os dados abaixo para registrar sua movimentação</p>
-        </div>
+          <h1 className="transaction-card__title">Nova Transação</h1>
+          <p className="transaction-card__subtitle">Insira os dados abaixo para registrar sua movimentação</p>
+        </header>
 
         {error && (
-          <div style={{ backgroundColor: '#FEE2E2', color: '#EF4444', padding: '12px', borderRadius: '8px', fontSize: '14px', marginBottom: '20px', textAlign: 'center', fontWeight: 500 }}>
+          <div className="transaction-card__error">
             {error}
           </div>
         )}
 
-        {/* Formulário */}
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+        <form onSubmit={handleSubmit} className="transaction-form">
           
-          {/* Seletor de Tipo (Receita / Despesa) usando os tons do Figma */}
-          <div>
-            <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: 500, color: '#334155' }}>Tipo de Movimentação</label>
-            <div style={{ display: 'flex', gap: '12px' }}>
+          {/* Seletores de Tipo */}
+          <div className="transaction-form__group">
+            <label className="transaction-form__label">Tipo de Movimentação</label>
+            <div className="type-toggle-group">
               <button
                 type="button"
                 onClick={() => setType('INCOME')}
-                style={{ flex: 1, padding: '10px', borderRadius: '8px', border: type === 'INCOME' ? '2px solid #10B981' : '1px solid #E2E8F0', backgroundColor: type === 'INCOME' ? '#ECFDF5' : '#FFF', color: type === 'INCOME' ? '#047857' : '#475569', fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s' }}
+                className={`type-toggle-btn type-toggle-btn--income ${type === 'INCOME' ? 'active' : ''}`}
               >
                 ▲ Receita
               </button>
               <button
                 type="button"
                 onClick={() => setType('EXPENSE')}
-                style={{ flex: 1, padding: '10px', borderRadius: '8px', border: type === 'EXPENSE' ? '2px solid #EF4444' : '1px solid #E2E8F0', backgroundColor: type === 'EXPENSE' ? '#FEF2F2' : '#FFF', color: type === 'EXPENSE' ? '#B91C1C' : '#475569', fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s' }}
+                className={`type-toggle-btn type-toggle-btn--expense ${type === 'EXPENSE' ? 'active' : ''}`}
               >
                 ▼ Despesa
               </button>
@@ -97,8 +91,8 @@ export function AddTransactionPage(): React.ReactElement {
           </div>
 
           {/* Campo: Descrição */}
-          <div>
-            <label htmlFor="description" style={{ display: 'block', marginBottom: '6px', fontSize: '14px', fontWeight: 500, color: '#334155' }}>Descrição</label>
+          <div className="transaction-form__group">
+            <label htmlFor="description" className="transaction-form__label">Descrição</label>
             <input
               id="description"
               type="text"
@@ -106,14 +100,14 @@ export function AddTransactionPage(): React.ReactElement {
               placeholder="Ex: Supermercado, Salário, etc."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              style={{ width: '100%', padding: '12px 16px', borderRadius: '8px', border: '1px solid #E2E8F0', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
+              className="transaction-form__input"
             />
           </div>
 
-          {/* Grupo de Linha Alternativa: Valor e Data */}
-          <div style={{ display: 'flex', gap: '16px' }}>
-            <div style={{ flex: 1 }}>
-              <label htmlFor="amount" style={{ display: 'block', marginBottom: '6px', fontSize: '14px', fontWeight: 500, color: '#334155' }}>Valor (R$)</label>
+          {/* Grupo de Linha: Valor e Data */}
+          <div className="transaction-form__row">
+            <div className="transaction-form__group">
+              <label htmlFor="amount" className="transaction-form__label">Valor (R$)</label>
               <input
                 id="amount"
                 type="number"
@@ -122,26 +116,26 @@ export function AddTransactionPage(): React.ReactElement {
                 placeholder="0,00"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                style={{ width: '100%', padding: '12px 16px', borderRadius: '8px', border: '1px solid #E2E8F0', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
+                className="transaction-form__input"
               />
             </div>
 
-            <div style={{ flex: 1 }}>
-              <label htmlFor="date" style={{ display: 'block', marginBottom: '6px', fontSize: '14px', fontWeight: 500, color: '#334155' }}>Data</label>
+            <div className="transaction-form__group">
+              <label htmlFor="date" className="transaction-form__label">Data</label>
               <input
                 id="date"
                 type="date"
                 required
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                style={{ width: '100%', padding: '11px 16px', borderRadius: '8px', border: '1px solid #E2E8F0', fontSize: '14px', outline: 'none', boxSizing: 'border-box', color: '#334155' }}
+                className="transaction-form__input"
               />
             </div>
           </div>
 
           {/* Campo: Categoria */}
-          <div>
-            <label htmlFor="category" style={{ display: 'block', marginBottom: '6px', fontSize: '14px', fontWeight: 500, color: '#334155' }}>Categoria</label>
+          <div className="transaction-form__group">
+            <label htmlFor="category" className="transaction-form__label">Categoria</label>
             <input
               id="category"
               type="text"
@@ -149,24 +143,24 @@ export function AddTransactionPage(): React.ReactElement {
               placeholder="Ex: Alimentação, Transporte, Lazer"
               value={categoryName}
               onChange={(e) => setCategoryName(e.target.value)}
-              style={{ width: '100%', padding: '12px 16px', borderRadius: '8px', border: '1px solid #E2E8F0', fontSize: '14px', outline: 'none', boxSizing: 'border-box' }}
+              className="transaction-form__input"
             />
           </div>
 
-          {/* Botões de Ação Baseados no Figma */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '12px' }}>
+          {/* Botões de Ação */}
+          <div className="transaction-form__actions">
             <button
               type="submit"
               disabled={loading}
-              style={{ width: '100%', padding: '14px', backgroundColor: '#0B1528', color: '#FFFFFF', border: 'none', borderRadius: '8px', fontSize: '15px', fontWeight: 600, cursor: loading ? 'not-allowed' : 'pointer', transition: 'background-color 0.2s' }}
+              className="btn-submit"
             >
               {loading ? 'Salvando...' : 'Cadastrar Transação'}
             </button>
 
             <button
               type="button"
-              onClick={() => navigate('/')}
-              style={{ width: '100%', padding: '12px', backgroundColor: 'transparent', color: '#64748B', border: 'none', borderRadius: '8px', fontSize: '14px', fontWeight: 500, cursor: 'pointer' }}
+              onClick={() => navigate('/transactions')}
+              className="btn-cancel"
             >
               Cancelar e voltar
             </button>
