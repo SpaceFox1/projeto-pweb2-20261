@@ -1,7 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
+import transactionsReducer from './slices/transactionsSlice';
 
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    transactions: transactionsReducer,
+  },
 });
 
 export type RootState = ReturnType<typeof store.getState>;
