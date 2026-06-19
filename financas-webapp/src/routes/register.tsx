@@ -1,15 +1,16 @@
 import { type FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { login, clearError } from '../store/slices/authSlice';
+import { register, clearError } from '../store/slices/authSlice';
 
-export function LoginPage(): React.ReactElement {
+export function RegisterPage(): React.ReactElement {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { loading, error } = useAppSelector((state) => state.auth);
 
   const [formData, setFormData] = useState({
     username: '',
+    name: '',
     password: '',
   });
 
@@ -25,19 +26,19 @@ export function LoginPage(): React.ReactElement {
     e.preventDefault();
     dispatch(clearError());
 
-    if (!formData.username || !formData.password) {
+    if (!formData.username || !formData.name || !formData.password) {
       return;
     }
 
-    const result = await dispatch(login(formData));
-    if (login.fulfilled.match(result)) {
+    const result = await dispatch(register(formData));
+    if (register.fulfilled.match(result)) {
       navigate('/');
     }
   };
 
   return (
     <div>
-      <h1>Login</h1>
+      <h1>Registro</h1>
       {error && <div>{error}</div>}
       <form onSubmit={handleSubmit}>
         <div>
@@ -47,6 +48,18 @@ export function LoginPage(): React.ReactElement {
             type="text"
             name="username"
             value={formData.username}
+            onChange={handleChange}
+            disabled={loading}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="name">Nome:</label>
+          <input
+            id="name"
+            type="text"
+            name="name"
+            value={formData.name}
             onChange={handleChange}
             disabled={loading}
             required
@@ -65,11 +78,11 @@ export function LoginPage(): React.ReactElement {
           />
         </div>
         <button type="submit" disabled={loading}>
-          {loading ? 'Entrando...' : 'Entrar'}
+          {loading ? 'Registrando...' : 'Registrar'}
         </button>
       </form>
       <div>
-        <a href="/register">Não tem uma conta? Registre-se</a>
+        <a href="/login">Já tem uma conta? Faça login</a>
       </div>
     </div>
   );
