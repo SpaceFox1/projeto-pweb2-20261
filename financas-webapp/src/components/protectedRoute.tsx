@@ -1,16 +1,15 @@
-import type { ReactElement } from 'react';
-import { Navigate, useLocation } from 'react-router';
+import { Navigate } from 'react-router';
+import { useAppSelector } from '../store/hooks';
 
 interface ProtectedRouteProps {
-  children: ReactElement;
+  children: React.ReactElement;
 }
 
-export function ProtectedRoute({ children }: ProtectedRouteProps): ReactElement {
-  const location = useLocation();
-  const token = localStorage.getItem('authToken') ?? localStorage.getItem('token');
+export function ProtectedRoute({ children }: ProtectedRouteProps): React.ReactElement {
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
 
-  if (!token) {
-    return <Navigate to="/login" replace state={{ from: location }} />;
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
   }
 
   return children;
