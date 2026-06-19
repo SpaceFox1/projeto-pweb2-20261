@@ -5,18 +5,24 @@ import './index.css';
 import { Provider } from 'react-redux';
 import { store } from './store/store.ts';
 import { BrowserRouter, Route, Routes } from 'react-router';
-import { AuthLayout } from './layouts/index.ts';
-import { LoginPage } from './routes/index.ts';
+import { AuthLayout, MainLayout } from './layouts/index.ts';
+import { LoginPage, RegisterPage, HomePage } from './routes/index.ts';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-          <Routes>
-            <Route element={<AuthLayout />}>
-              <Route path="login" element={<LoginPage />} />
-            </Route>
-          </Routes>
+        <Routes>
+          {/* Auth routes */}
+          <Route element={<AuthLayout />}>
+            <Route path="login" element={<LoginPage />} />
+            <Route path="register" element={<RegisterPage />} />
+          </Route>
+
+          <Route element={<MainLayout />}>
+            <Route path="/" element={<HomePage />} />
+          </Route>
+        </Routes>
       </BrowserRouter>
     </Provider>
   </StrictMode>,
