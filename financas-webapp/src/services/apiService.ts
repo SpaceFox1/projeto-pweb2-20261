@@ -38,11 +38,16 @@ class ApiService {
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      const errorMessage = errorData.message || `HTTP Error: ${response.status}`;
+      let errorMessage: string;
+      if (errorData && typeof errorData === 'object') {
+        const errorValues = Object.entries(errorData).filter(([, value]) => typeof value === 'string');
+        errorMessage = errorValues.map(([key, value]) => `${key}: ${value}`).join(' ') || `HTTP Error: ${response.status}`;
+      } else {
+        errorMessage = `HTTP Error: ${response.status}`;
+      }
       throw new Error(errorMessage);
     }
 
-    // Handle empty responses (e.g., 204 No Content or 200 with no body)
     const contentLength = response.headers.get('content-length');
     if (contentLength === '0' || response.status === 204) {
       return {} as T;

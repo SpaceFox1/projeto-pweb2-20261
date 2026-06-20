@@ -2,6 +2,7 @@ import { type FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { login, clearError } from '../store/slices/authSlice';
+import styles from './login.module.css'; // Hooking up the new scents!
 
 export function LoginPage(): React.ReactElement {
   const dispatch = useAppDispatch();
@@ -36,12 +37,14 @@ export function LoginPage(): React.ReactElement {
   };
 
   return (
-    <div>
-      <h1>Login</h1>
-      {error && <div>{error}</div>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="username">Nome de exibição:</label>
+    <div className={styles.loginContainer}>
+      <h1 className={styles.title}>Login</h1>
+
+      {error && <div className={styles.errorBox}>{error}</div>}
+
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <div className={styles.inputGroup}>
+          <label htmlFor="username" className={styles.label}>Nome de exibição:</label>
           <input
             id="username"
             type="text"
@@ -49,11 +52,13 @@ export function LoginPage(): React.ReactElement {
             value={formData.username}
             onChange={handleChange}
             disabled={loading}
+            className={styles.input}
             required
           />
         </div>
-        <div>
-          <label htmlFor="password">Senha:</label>
+
+        <div className={styles.inputGroup}>
+          <label htmlFor="password" className={styles.label}>Senha:</label>
           <input
             id="password"
             type="password"
@@ -61,15 +66,20 @@ export function LoginPage(): React.ReactElement {
             value={formData.password}
             onChange={handleChange}
             disabled={loading}
+            className={styles.input}
             required
           />
         </div>
-        <button type="submit" disabled={loading}>
+
+        <button type="submit" disabled={loading} className={styles.submitBtn}>
           {loading ? 'Entrando...' : 'Entrar'}
         </button>
       </form>
-      <div>
-        <a href="/register">Não tem uma conta? Registre-se</a>
+
+      <div className={styles.footer}>
+        <a href="/register" className={styles.registerLink}>
+          Não tem uma conta? Registre-se
+        </a>
       </div>
     </div>
   );

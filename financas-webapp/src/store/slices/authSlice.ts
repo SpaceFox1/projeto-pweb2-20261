@@ -51,17 +51,17 @@ export const register = createAsyncThunk(
   'auth/register',
   async (data: { username: string; name: string; password: string }, { rejectWithValue }) => {
     try {
-      const response = await apiService.post<{ token: string; user: User }>('/auth/register', data);
-      const { token, user } = response;
+      const response = await apiService.post<{ token: string; id: string; username: string; name: string }>('/auth/register', data);
+      const { token, id, username, name } = response;
 
       // Persist token and user to localStorage
       localStorage.setItem('authToken', token);
-      localStorage.setItem('authUser', JSON.stringify(user));
+      localStorage.setItem('authUser', JSON.stringify({ user: { id, username, name } }));
 
       // Set the token in the API service
       apiService.setToken(token);
 
-      return { token, user };
+      return { token, user: { id, username, name } };
     } catch (error: unknown) {
       if (error instanceof Error) {
         return rejectWithValue(error.message);
