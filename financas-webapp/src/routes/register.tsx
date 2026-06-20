@@ -2,6 +2,7 @@ import { type FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { register, clearError } from '../store/slices/authSlice';
+import styles from './register.module.css'; // Sniffing out the design tokens
 
 export function RegisterPage(): React.ReactElement {
   const dispatch = useAppDispatch();
@@ -37,12 +38,14 @@ export function RegisterPage(): React.ReactElement {
   };
 
   return (
-    <div>
-      <h1>Registro</h1>
-      {error && <div>{error}</div>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="username">Nome de exibição:</label>
+    <div className={styles.registerContainer}>
+      <h1 className={styles.title}>Registro</h1>
+
+      {error && <div className={styles.errorBox}>{error}</div>}
+
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <div className={styles.inputGroup}>
+          <label htmlFor="username" className={styles.label}>Nome de exibição:</label>
           <input
             id="username"
             type="text"
@@ -50,11 +53,13 @@ export function RegisterPage(): React.ReactElement {
             value={formData.username}
             onChange={handleChange}
             disabled={loading}
+            className={styles.input}
             required
           />
         </div>
-        <div>
-          <label htmlFor="name">Nome:</label>
+
+        <div className={styles.inputGroup}>
+          <label htmlFor="name" className={styles.label}>Nome:</label>
           <input
             id="name"
             type="text"
@@ -62,11 +67,13 @@ export function RegisterPage(): React.ReactElement {
             value={formData.name}
             onChange={handleChange}
             disabled={loading}
+            className={styles.input}
             required
           />
         </div>
-        <div>
-          <label htmlFor="password">Senha:</label>
+
+        <div className={styles.inputGroup}>
+          <label htmlFor="password" className={styles.label}>Senha:</label>
           <input
             id="password"
             type="password"
@@ -74,15 +81,20 @@ export function RegisterPage(): React.ReactElement {
             value={formData.password}
             onChange={handleChange}
             disabled={loading}
+            className={styles.input}
             required
           />
         </div>
-        <button type="submit" disabled={loading}>
+
+        <button type="submit" disabled={loading} className={styles.submitBtn}>
           {loading ? 'Registrando...' : 'Registrar'}
         </button>
       </form>
-      <div>
-        <a href="/login">Já tem uma conta? Faça login</a>
+
+      <div className={styles.footer}>
+        <a href="/login" className={styles.loginLink}>
+          Já tem uma conta? Faça login
+        </a>
       </div>
     </div>
   );

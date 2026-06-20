@@ -75,7 +75,25 @@ O usuário deve ter acesso a uma tela inicial com um resumo financeiro do mês a
 
 ---
 
-## RF04 - Definido pelo grupo (Etapa 1)
+## RF04 - Definido pelo grupo - Gráficos (Etapa 1)
+
+### Descrição
+
+O usuário deve ter acesso a representações visuais e dinâmicas dos seus dados financeiros para facilitar a compreensão, dimensão e análise de seus hábitos de consumo. A aplicação deve renderizar gráficos interativos que ilustrem a distribuição de gastos por categoria e o balanço consolidado entre receitas e despesas, permitindo uma tomada de decisão financeira mais rápida.
+
+### Detalhes Técnicos
+
+- Exibição dos componentes gráficos na página Home, com o objetivo de deixar os dados já exibidos ainda mais visuais
+- Os dados dos gráficos devem ser calculados em tempo de execução, mudando conforme adição de novas transações
+- Os gráficos adicionados devem ter um tamanho e local fixo para serem visíveis
+- Não há restrição sobre os tipos de gráficos a serem utilizados. Devem ser aqueles que melhor se encaixarem com as informações
+
+### Critérios de Aceitação
+
+- [ ] O usuário consegue visualizar o histórico de saldos ao longo do tempo
+- [ ] O usuário consegue visualizar o histórico de gastos por mês
+- [ ] O usuário consegue visualizar quanto seus gastos equivalem em relação a seu salário, em valores absolutos e em percentual
+- [ ] O usuário consegue visualizar quanto foi seus gastos por categoria
 
 ## RF05 — Cadastro de Metas Financeiras (Etapa 2)
 
