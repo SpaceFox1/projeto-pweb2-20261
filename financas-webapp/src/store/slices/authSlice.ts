@@ -4,12 +4,12 @@ import { apiService } from '../../services/apiService';
 export interface User {
   id: string;
   name: string;
-  email: string;
+  username: string;
 }
 
 export interface AuthState {
   token: string | null;
-  user: User | null;
+  user: { user: User } | null;
   loading: boolean;
   error: string | null;
   isAuthenticated: boolean;
@@ -27,17 +27,17 @@ export const login = createAsyncThunk(
   'auth/login',
   async (credentials: { username: string; password: string }, { rejectWithValue }) => {
     try {
-      const response = await apiService.post<{ token: string; user: User }>('/auth/login', credentials);
-      const { token, user } = response;
+      const response = await apiService.post<{ token: string; id: string; username: string; name: string }>('/auth/login', credentials);
+      const { token, id, username, name } = response;
 
       // Persist token and user to localStorage
       localStorage.setItem('authToken', token);
-      localStorage.setItem('authUser', JSON.stringify(user));
+      localStorage.setItem('authUser', JSON.stringify({ user: { id, username, name } }));
 
       // Set the token in the API service
       apiService.setToken(token);
 
-      return { token, user };
+      return { token, user: { id, username, name } };
     } catch (error: unknown) {
       if (error instanceof Error) {
         return rejectWithValue(error.message);
@@ -98,7 +98,7 @@ const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action: PayloadAction<{ token: string; user: User }>) => {
         state.loading = false;
         state.token = action.payload.token;
-        state.user = action.payload.user;
+        state.user = { user: action.payload.user };
         state.isAuthenticated = true;
         state.error = null;
       })
@@ -117,7 +117,7 @@ const authSlice = createSlice({
       .addCase(register.fulfilled, (state, action: PayloadAction<{ token: string; user: User }>) => {
         state.loading = false;
         state.token = action.payload.token;
-        state.user = action.payload.user;
+        state.user = { user: action.payload.user };
         state.isAuthenticated = true;
         state.error = null;
       })

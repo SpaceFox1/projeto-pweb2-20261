@@ -1,4 +1,4 @@
-.dashboard-layout {
+.dashboardLayout {
   display: grid;
   grid-template-columns: 240px minmax(0, 1fr);
   width: 100%;
@@ -7,12 +7,13 @@
   text-align: left;
 }
 
-.dashboard-layout,
-.dashboard-layout * {
+/* Properly target all child elements inside this module's scope */
+.dashboardLayout,
+.dashboardLayout * {
   box-sizing: border-box;
 }
 
-.dashboard-layout__skip-link {
+.skipLink {
   position: fixed;
   z-index: 20;
   top: 12px;
@@ -26,11 +27,11 @@
   transition: transform 160ms ease;
 }
 
-.dashboard-layout__skip-link:focus {
+.skipLink:focus {
   transform: translateY(0);
 }
 
-.dashboard-layout__sidebar {
+.sidebar {
   position: sticky;
   top: 0;
   height: 100svh;
@@ -38,9 +39,20 @@
   padding: 28px 20px;
   border-right: 1px solid #dce4df;
   background: #fafcfa;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.dashboard-layout__brand {
+.sideItems {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+}
+
+.brand {
   display: flex;
   align-items: center;
   gap: 11px;
@@ -50,7 +62,7 @@
   font-weight: 700;
 }
 
-.dashboard-layout__brand-mark {
+.brandMark {
   display: grid;
   width: 34px;
   height: 34px;
@@ -60,12 +72,13 @@
   background: #236b4d;
 }
 
-.dashboard-layout__navigation {
-  display: grid;
-  gap: 7px;
+.navigation {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.dashboard-layout__link {
+.link {
   display: flex;
   align-items: center;
   gap: 11px;
@@ -80,18 +93,18 @@
     background-color 160ms ease;
 }
 
-.dashboard-layout__link:hover,
-.dashboard-layout__link--active {
+.link:hover,
+.linkActive {
   color: #236b4d;
   background: #e3f1e9;
 }
 
-.dashboard-layout__link:focus-visible {
+.link:focus-visible {
   outline: 3px solid rgba(35, 107, 77, 0.3);
   outline-offset: 2px;
 }
 
-.dashboard-layout__link svg {
+.link svg {
   width: 18px;
   height: 18px;
   flex-shrink: 0;
@@ -100,7 +113,7 @@
   stroke-width: 1.8;
 }
 
-.dashboard-layout__main {
+.main {
   width: 100%;
   min-width: 0;
   max-width: 1440px;
@@ -109,12 +122,62 @@
   outline: none;
 }
 
+.navImg {
+  height: 32px;
+  aspect-ratio: 1;
+  background: var(--text-primary);
+  mask-size: contain;
+  mask-position: center;
+}
+
+.linkActive .navImg {
+  background: var(--accent-color);
+}
+
+.logo {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  gap: 0.5rem;
+  height: 2rem;
+}
+
+.logoImg {
+  height: 100%;
+  aspect-ratio: 1;
+}
+
+.brandName {
+  font-family: LeagueSpartan;
+  font-size: 1.5rem;
+  font-weight: 300;
+  height: 100%;
+  color: var(--text-primary);
+}
+
+.brandHighlight {
+  color: var(--accent-color);
+  height: fit-content;
+}
+
+.logoutButton {
+  border: 0;
+  background: transparent;
+}
+
+.logoutButton:hover {
+  background-color: rgba(255, 0, 0, 0.1);
+  color: #ff4d4d;
+}
+
+/* Responsive tracks */
 @media (max-width: 800px) {
-  .dashboard-layout {
+  .dashboardLayout {
     grid-template-columns: 1fr;
   }
 
-  .dashboard-layout__sidebar {
+  .sidebar {
     position: sticky;
     top: 0;
     z-index: 10;
@@ -128,23 +191,23 @@
     border-bottom: 1px solid #dce4df;
   }
 
-  .dashboard-layout__brand {
+  .brand {
     padding: 0;
   }
 
-  .dashboard-layout__brand > span:last-child {
+  .brand>span:last-child {
     display: none;
   }
 
-  .dashboard-layout__navigation {
+  .navigation {
     display: block;
   }
 
-  .dashboard-layout__link {
+  .link {
     padding: 9px 11px;
   }
 
-  .dashboard-layout__main {
+  .main {
     padding: 20px;
   }
 }

@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { apiService } from '../../services/apiService';
 
 export type TransactionType = 'INCOME' | 'EXPENSE';
@@ -65,6 +65,54 @@ export const fetchTransactions = createAsyncThunk(
   },
 );
 
+export const deleteTransaction = createAsyncThunk(
+  'transactions/delete',
+  async (id: number, { rejectWithValue, dispatch }) => {
+    try {
+      await apiService.delete(`/transactions/${id}`);
+      // Refetch transactions after successful deletion
+      dispatch(fetchTransactions());
+      return id;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue('Não foi possível deletar a transação.');
+    }
+  },
+);
+
+export const updateTransaction = createAsyncThunk(
+  'transactions/update',
+  async (
+    data: {
+      id: number;
+      description: string;
+      amount: number;
+      type: TransactionType;
+      categoryId: number;
+      date: string;
+    },
+    { rejectWithValue },
+  ) => {
+    try {
+      const response = await apiService.put<Transaction>(`/transactions/${data.id}`, {
+        description: data.description,
+        amount: data.amount,
+        type: data.type,
+        categoryId: data.categoryId,
+        date: data.date,
+      });
+      return response;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue('Não foi possível atualizar a transação.');
+    }
+  },
+);
+
 const transactionsSlice = createSlice({
   name: 'transactions',
   initialState,
@@ -75,12 +123,24 @@ const transactionsSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchTransactions.fulfilled, (state, action) => {
+      .addCase(fetchTransactions.fulfilled, (state, action: PayloadAction<Transaction[]>) => {
         state.loading = false;
         state.items = action.payload;
       })
       .addCase(fetchTransactions.rejected, (state, action) => {
         state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(deleteTransaction.rejected, (state, action) => {
+        state.error = action.payload as string;
+      })
+      .addCase(updateTransaction.fulfilled, (state, action: PayloadAction<Transaction>) => {
+        const index = state.items.findIndex((item) => item.id === action.payload.id);
+        if (index !== -1) {
+          state.items[index] = action.payload;
+        }
+      })
+      .addCase(updateTransaction.rejected, (state, action) => {
         state.error = action.payload as string;
       });
   },
