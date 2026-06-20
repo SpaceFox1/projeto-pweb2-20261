@@ -42,6 +42,17 @@ class ApiService {
       throw new Error(errorMessage);
     }
 
+    // Handle empty responses (e.g., 204 No Content or 200 with no body)
+    const contentLength = response.headers.get('content-length');
+    if (contentLength === '0' || response.status === 204) {
+      return {} as T;
+    }
+
+    const contentType = response.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      return {} as T;
+    }
+
     return response.json();
   }
 

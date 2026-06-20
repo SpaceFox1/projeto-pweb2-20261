@@ -1,0 +1,170 @@
+.transactionsPage {
+  width: min(1120px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 56px 0;
+  color: var(--text-primary);
+  text-align: left;
+}
+
+.transactionsPage,
+.transactionsPage * {
+  box-sizing: border-box;
+}
+
+.header {
+  margin-bottom: 28px;
+}
+
+.header h1 {
+  margin: 5px 0 8px;
+  color: var(--bg-secondary);
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+}
+
+.header>p:last-child {
+  opacity: 0.7;
+}
+
+.eyebrow {
+  color: var(--accent-color);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+  border-radius: var(--border-radius);
+  background: var(--bg-primary);
+}
+
+.table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 17px 20px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.table th {
+  color: var(--text-primary);
+  opacity: 0.8;
+  background: rgba(15, 23, 42, 0.05);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.table tbody tr:hover {
+  background: rgba(15, 23, 42, 0.02);
+}
+
+.type {
+  display: inline-flex;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.typeIncome {
+  color: var(--bg-primary);
+  background: var(--accent-color);
+}
+
+.typeExpense {
+  color: var(--text-secondary);
+  background: #ef4444;
+}
+
+.amount {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.amountIncome {
+  color: var(--accent-color);
+}
+
+.amountExpense {
+  color: #ef4444;
+}
+
+.description {
+  max-width: 320px;
+  opacity: 0.8;
+}
+
+.actionsHeader {
+  width: 100px;
+}
+
+.actionsCell {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.actionBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: var(--border-radius);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.actionBtn:hover {
+  background: rgba(15, 23, 42, 0.08);
+}
+
+.actionBtn:active {
+  transform: scale(0.95);
+}
+
+.actionIcon {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.status {
+  padding: 28px;
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.statusError {
+  border-color: #ef4444;
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.05);
+}
+
+@media (max-width: 640px) {
+  .transactionsPage {
+    width: min(100% - 28px, 1120px);
+    padding: 36px 0;
+  }
+
+  .table th,
+  .table td {
+    padding: 14px 16px;
+  }
+}
