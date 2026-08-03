@@ -7,6 +7,9 @@ import {
   type Transaction,
 } from '../store/slices/transactionsSlice';
 import { fetchCategories } from '../store/slices/categoriesSlice';
+import { fetchGoals, selectGoalProgress, type Goal } from '../store/slices/goalsSlice';
+import { fetchSpendingLimits, selectSpendingStatus } from '../store/slices/spendingLimitsSlice';
+import { SpendingLimitsOverview } from '../components/SpendingLimitsOverview';
 import {
   BalanceOverTimeChart,
   ExpensesByCategoryChart,
@@ -75,6 +78,8 @@ export function HomePage(): React.ReactElement {
   const { user } = useAppSelector((state) => state.auth);
   const { items: transactions, loading, error } = useAppSelector((state) => state.transactions);
   const { items: categories } = useAppSelector((state) => state.categories);
+  const { items: goals } = useAppSelector((state) => state.goals);
+  const { items: spendingLimits } = useAppSelector((state) => state.spendingLimits);
 
   const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
   const [deletingTransaction, setDeletingTransaction] = useState<Transaction | null>(null);
@@ -85,6 +90,8 @@ export function HomePage(): React.ReactElement {
   useEffect(() => {
     dispatch(fetchTransactions());
     dispatch(fetchCategories());
+    dispatch(fetchGoals());
+    dispatch(fetchSpendingLimits());
   }, [dispatch]);
 
   const handleEditClick = (transaction: Transaction): void => {
@@ -130,6 +137,10 @@ export function HomePage(): React.ReactElement {
 
   const stats = calculateMonthlyStats(transactions);
   const recentTransactions = getRecentTransactions(transactions);
+  const spendingStatus = selectSpendingStatus({
+    spendingLimits: { items: spendingLimits, loading: false, error: null },
+    transactions: { items: transactions },
+  });
 
   return (
     <div className={styles.dashboard}>
@@ -170,6 +181,51 @@ export function HomePage(): React.ReactElement {
           <span className={styles['card-label']}>Despesas</span>
           <div className={styles['card-value']}>{formatCurrency(stats.expense)}</div>
           <p className={styles['card-detail']}>Neste mês</p>
+        </div>
+      </section>
+
+      <section className={styles['charts-section']}>
+        <h2 className={styles['section-title']}>Metas em andamento</h2>
+        <div className={styles['transactions-container']}>
+          {goals.length === 0 ? (
+            <div className={styles['transactions-empty']}>Nenhuma meta cadastrada ainda.</div>
+          ) : (
+            <ul className={styles['transactions-list']}>
+              {goals.slice(0, 3).map((goal: Goal) => {
+                const progress = selectGoalProgress(goal.id)({
+                  goals: { items: goals, loading: false, error: null },
+                  transactions: { items: transactions },
+                });
+                return (
+                  <li key={goal.id} className={styles['transaction-item']} style={{ '--progress': `${progress}%`} as React.CSSProperties}>
+                    <div className={styles['transaction-info']}>
+                      <div className={styles['transaction-icon']} style={{ backgroundColor: '#7e46e5', maskImage: 'url(/icons/goals.svg)' }}></div>
+                      <div className={styles['transaction-details']}>
+                        <h3>{goal.name}</h3>
+                        <p>{goal.categoryName ?? 'Sem categoria'}</p>
+                      </div>
+                    </div>
+                    <div className={styles['transaction-amount']}>
+                      <div className={styles['transaction-value']} style={{ color: '#000' }}>
+                        {progress}%
+                      </div>
+                      <p className={styles['transaction-date']}>Prazo {formatDate(goal.deadline)}</p>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </div>
+      </section>
+
+      <section className={styles['charts-section']}>
+        <h2 className={styles['section-title']}>Limites de gasto do mês</h2>
+        <div className={styles['transactions-container']}>
+          <SpendingLimitsOverview
+            items={spendingStatus}
+            showViewAllLink
+          />
         </div>
       </section>
 

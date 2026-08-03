@@ -171,40 +171,141 @@
   color: #ff4d4d;
 }
 
+.mobileHeader {
+  display: none;
+}
+
+.sidebarHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.closeButton {
+  display: none;
+}
+
+.menuButton,
+.closeButton,
+.backdrop {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.menuButton,
+.closeButton {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  color: #173e2e;
+  transition: background-color 160ms ease;
+  display: none;
+}
+
+.menuButton:hover,
+.closeButton:hover {
+  background: #e3f1e9;
+}
+
+.menuButton:focus-visible,
+.closeButton:focus-visible {
+  outline: 3px solid rgba(35, 107, 77, 0.3);
+  outline-offset: 2px;
+}
+
+.menuIcon {
+  width: 20px;
+  height: 2px;
+  background: currentColor;
+  border-radius: 2px;
+  box-shadow: 0 -6px 0 currentColor, 0 6px 0 currentColor;
+}
+
+.closeIcon {
+  position: relative;
+  width: 20px;
+  height: 20px;
+}
+
+.closeIcon::before,
+.closeIcon::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+  border-radius: 2px;
+}
+
+.closeIcon::before {
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.closeIcon::after {
+  transform: translateY(-50%) rotate(-45deg);
+}
+
 /* Responsive tracks */
 @media (max-width: 800px) {
   .dashboardLayout {
     grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
   }
 
-  .sidebar {
+  .mobileHeader {
+    display: flex;
     position: sticky;
     top: 0;
     z-index: 10;
-    display: flex;
-    height: auto;
-    overflow: visible;
     align-items: center;
     justify-content: space-between;
+    gap: 12px;
     padding: 12px 18px;
-    border-right: 0;
     border-bottom: 1px solid #dce4df;
+    background: #fafcfa;
   }
 
-  .brand {
-    padding: 0;
+  .sidebarHeader {
+    margin-bottom: 0.5rem;
   }
 
-  .brand>span:last-child {
-    display: none;
+  .menuButton,
+  .closeButton {
+    display: grid;
   }
 
-  .navigation {
-    display: block;
+  .sidebar {
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    height: 100svh;
+    transform: translateX(-100%);
+    transition: transform 220ms ease;
+    border-right: 0;
+    pointer-events: none;
+  }
+
+  .sidebarOpen {
+    transform: translateX(0);
+    pointer-events: auto;
+  }
+
+  .backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 15;
+    background: rgba(15, 35, 25, 0.45);
   }
 
   .link {
-    padding: 9px 11px;
+    padding: 12px 14px;
+    font-size: 1rem;
   }
 
   .main {

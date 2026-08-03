@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useAppSelector } from '../store/hooks';
 import type { Transaction, TransactionType } from '../store/slices/transactionsSlice';
 import styles from './TransactionModals.module.css';
 

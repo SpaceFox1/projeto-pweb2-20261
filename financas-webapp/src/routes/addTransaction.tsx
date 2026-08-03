@@ -1,8 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { fetchCategories } from '../store/slices/categoriesSlice';
 import { fetchTransactions } from '../store/slices/transactionsSlice';
+import {
+  calculateSpendingPercent,
+  fetchSpendingLimits,
+  getProjectedSpendingStatus,
+  getSpendingStatusColor,
+  selectSpendingStatus,
+} from '../store/slices/spendingLimitsSlice';
+import {
+  invalidateTransactionsCache,
+  showSpendingLimitNotification,
+} from '../utils/serviceWorkerCache';
 import { apiService } from '../services/apiService';
 import type { TransactionType } from '../store/slices/transactionsSlice';
 import './addTransaction.css';
@@ -15,12 +26,17 @@ interface TransactionPayload {
   date: string;
 }
 
+const formatCurrency = (value: number): string =>
+  new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+
 export function AddTransactionPage(): React.ReactElement {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { items: categories, loading: categoriesLoading } = useAppSelector(
     (state) => state.categories,
   );
+  const spendingLimits = useAppSelector((state) => state.spendingLimits.items);
+  const transactions = useAppSelector((state) => state.transactions.items);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -42,8 +58,35 @@ export function AddTransactionPage(): React.ReactElement {
   const [date, setDate] = useState(getLocalDateString());
 
   useEffect(() => {
-    dispatch(fetchCategories());
+    void dispatch(fetchCategories());
+    void dispatch(fetchTransactions());
+    void dispatch(fetchSpendingLimits());
   }, [dispatch]);
+
+  const spendingStatus = selectSpendingStatus({
+    spendingLimits: { items: spendingLimits, loading: false, error: null },
+    transactions: { items: transactions },
+  });
+
+  const limitWarning = useMemo(() => {
+    if (type !== 'EXPENSE' || !categoryId || !amount) {
+      return null;
+    }
+
+    const parsedAmount = parseFloat(amount);
+    if (Number.isNaN(parsedAmount) || parsedAmount <= 0) {
+      return null;
+    }
+
+    const currentStatus = spendingStatus.find((item) => item.categoryId === categoryId);
+    const projected = getProjectedSpendingStatus(currentStatus, parsedAmount);
+
+    if (!projected || projected.projectedPercent < 100) {
+      return null;
+    }
+
+    return projected;
+  }, [amount, categoryId, spendingStatus, type]);
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
@@ -66,7 +109,20 @@ export function AddTransactionPage(): React.ReactElement {
 
     try {
       await apiService.post('/transactions', payload);
-      // Refresh transactions after creating a new one
+      const currentStatus = spendingStatus.find((item) => item.categoryId === categoryId);
+      if (type === 'EXPENSE' && currentStatus) {
+        const projectedSpent = currentStatus.spent + parseFloat(amount);
+        const projectedPercent = calculateSpendingPercent(projectedSpent, currentStatus.limitAmount);
+
+        if (projectedPercent >= 80) {
+          showSpendingLimitNotification(
+            'Limite de gasto atingido',
+            `A categoria ${currentStatus.categoryName ?? 'selecionada'} está em ${projectedPercent}% do limite mensal.`,
+          );
+        }
+      }
+
+      invalidateTransactionsCache();
       dispatch(fetchTransactions());
       navigate('/transactions');
     } catch (err) {
@@ -80,7 +136,6 @@ export function AddTransactionPage(): React.ReactElement {
   return (
     <div className="add-transaction-container">
       <div className="transaction-card">
-        {/* Cabeçalho */}
         <header className="transaction-card__header">
           <div className="transaction-card__logo">
             <span className="transaction-card__logo-icon">↗</span>
@@ -97,7 +152,6 @@ export function AddTransactionPage(): React.ReactElement {
         {error && <div className="transaction-card__error">{error}</div>}
 
         <form onSubmit={handleSubmit} className="transaction-form">
-          {/* Seletores de Tipo */}
           <div className="transaction-form__group">
             <label className="transaction-form__label">Tipo de Movimentação</label>
             <div className="type-toggle-group">
@@ -120,7 +174,6 @@ export function AddTransactionPage(): React.ReactElement {
             </div>
           </div>
 
-          {/* Campo: Descrição */}
           <div className="transaction-form__group">
             <label htmlFor="description" className="transaction-form__label">
               Descrição
@@ -136,7 +189,6 @@ export function AddTransactionPage(): React.ReactElement {
             />
           </div>
 
-          {/* Grupo de Linha: Valor e Data */}
           <div className="transaction-form__row">
             <div className="transaction-form__group">
               <label htmlFor="amount" className="transaction-form__label">
@@ -169,7 +221,6 @@ export function AddTransactionPage(): React.ReactElement {
             </div>
           </div>
 
-          {/* Campo: Categoria */}
           <div className="transaction-form__group">
             <label htmlFor="category" className="transaction-form__label">
               Categoria
@@ -193,8 +244,27 @@ export function AddTransactionPage(): React.ReactElement {
             </select>
           </div>
 
-          {/* Botões de Ação */}
           <div className="transaction-form__actions">
+            {limitWarning && (
+              <div
+                className="limit-warning-popup"
+                role="alert"
+                style={{ borderColor: getSpendingStatusColor(limitWarning.projectedPercent) }}
+              >
+                <strong>{limitWarning.categoryName}</strong>
+                <p>
+                  Esta despesa levará o uso do limite para{' '}
+                  <span style={{ color: getSpendingStatusColor(limitWarning.projectedPercent) }}>
+                    {limitWarning.projectedPercent}%
+                  </span>
+                  .
+                </p>
+                <p className="limit-warning-popup__detail">
+                  Projeção: {formatCurrency(limitWarning.projectedSpent)} de {formatCurrency(limitWarning.limitAmount)}
+                </p>
+              </div>
+            )}
+
             <button type="submit" disabled={loading} className="btn-submit">
               {loading ? 'Salvando...' : 'Cadastrar Transação'}
             </button>

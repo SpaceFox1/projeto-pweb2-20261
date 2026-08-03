@@ -89,9 +89,10 @@ export function BalanceOverTimeChart({
         <YAxis stroke="#666" />
         <Tooltip
           contentStyle={{ backgroundColor: '#ffffff', border: '1px solid #e5e7eb' }}
-          formatter={(value: number) =>
-            `R$ ${value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`
-          }
+          formatter={(value: unknown) => {
+            const numericValue = typeof value === 'number' ? value : Number(value ?? 0);
+            return `R$ ${numericValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+          }}
         />
         <Legend />
         <Line
@@ -157,9 +158,10 @@ export function ExpensesOverTimeChart({
         <YAxis stroke="#666" />
         <Tooltip
           contentStyle={{ backgroundColor: '#ffffff', border: '1px solid #e5e7eb' }}
-          formatter={(value: number) =>
-            `R$ ${value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`
-          }
+          formatter={(value: unknown) => {
+            const numericValue = typeof value === 'number' ? value : Number(value ?? 0);
+            return `R$ ${numericValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+          }}
         />
         <Legend />
         <Line
@@ -206,9 +208,10 @@ export function ExpensesByCategoryChart({
         <YAxis stroke="#666" />
         <Tooltip
           contentStyle={{ backgroundColor: '#ffffff', border: '1px solid #e5e7eb' }}
-          formatter={(value: number) =>
-            `R$ ${value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`
-          }
+          formatter={(value: unknown) => {
+            const numericValue = typeof value === 'number' ? value : Number(value ?? 0);
+            return `R$ ${numericValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+          }}
         />
         <Bar dataKey="value" fill={COLORS.expense} name="Despesa" radius={[8, 8, 0, 0]} />
       </BarChart>
@@ -246,9 +249,11 @@ export function IncomeExpenseRatioChart({
           cx="50%"
           cy="50%"
           labelLine={false}
-          label={({ name, value, percent }) =>
-            `${name}: R$ ${value.toLocaleString('pt-BR', { minimumFractionDigits: 0 })} (${(percent * 100).toFixed(0)}%)`
-          }
+          label={({ name, value, percent }) => {
+            const numericValue = typeof value === 'number' ? value : Number(value ?? 0);
+            const numericPercent = typeof percent === 'number' ? percent : 0;
+            return `${name}: R$ ${numericValue.toLocaleString('pt-BR', { minimumFractionDigits: 0 })} (${(numericPercent * 100).toFixed(0)}%)`;
+          }}
           outerRadius={60}
           fill="#8884d8"
           dataKey="value"
@@ -257,9 +262,10 @@ export function IncomeExpenseRatioChart({
           <Cell fill={COLORS.expense} />
         </Pie>
         <Tooltip
-          formatter={(value: number) =>
-            `R$ ${value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`
-          }
+          formatter={(value: unknown) => {
+            const numericValue = typeof value === 'number' ? value : Number(value ?? 0);
+            return `R$ ${numericValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+          }}
           contentStyle={{ backgroundColor: '#ffffff', border: '1px solid #e5e7eb' }}
         />
       </PieChart>
