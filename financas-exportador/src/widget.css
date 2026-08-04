@@ -1,0 +1,378 @@
+/* ─── Widget root ─────────────────────────────────────────────── */
+.ew-root {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  color: #0f172a;
+  --ew-accent: #10b981;
+  --ew-danger: #ef4444;
+  --ew-csv: #3b82f6;
+  --ew-wa: #25d366;
+  --ew-surface: #f8fcfa;
+  --ew-border: #dce4df;
+  --ew-radius: 14px;
+}
+
+.ew-root,
+.ew-root * {
+  box-sizing: border-box;
+}
+
+/* ─── Tabs ────────────────────────────────────────────────────── */
+.ew-tabs {
+  display: flex;
+  gap: 6px;
+  padding: 6px;
+  background: #f1f5f2;
+  border-radius: calc(var(--ew-radius) + 6px);
+  margin-bottom: 24px;
+}
+
+.ew-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: var(--ew-radius);
+  background: transparent;
+  color: #6c7870;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 160ms ease, color 160ms ease, box-shadow 160ms ease;
+}
+
+.ew-tab:hover {
+  background: #e3f1e9;
+  color: #0f172a;
+}
+
+.ew-tab--active {
+  background: #fff;
+  color: #0f172a;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+.ew-tab__icon {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+/* ─── Export Card ─────────────────────────────────────────────── */
+.export-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 28px;
+  background: var(--ew-surface);
+  border: 1px solid var(--ew-border);
+  border-radius: var(--ew-radius);
+  animation: ew-fade-in 180ms ease;
+}
+
+@keyframes ew-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.export-card__icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.export-card__icon svg {
+  width: 28px;
+  height: 28px;
+  fill: #fff;
+}
+
+.export-card__icon--pdf {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.export-card__icon--csv {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+
+.export-card__icon--whatsapp {
+  background: linear-gradient(135deg, #25d366, #128c7e);
+}
+
+.export-card__icon--pptx {
+  background: linear-gradient(135deg, #f79a36, #d7310b);
+}
+
+.export-card__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #0f172a;
+  margin: 0;
+}
+
+.export-card__desc {
+  font-size: 0.875rem;
+  color: #475569;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.export-card__count {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin: 0;
+}
+
+/* ─── PDF Summary ─────────────────────────────────────────────── */
+.export-card__summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.summary-item {
+  padding: 14px;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px solid var(--ew-border);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.summary-item__label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.summary-item__value {
+  font-size: 1rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.summary-item--income .summary-item__value {
+  color: var(--ew-accent);
+}
+
+.summary-item--expense .summary-item__value {
+  color: var(--ew-danger);
+}
+
+/* ─── CSV Preview ─────────────────────────────────────────────── */
+.export-card__preview {
+  background: #fff;
+  border: 1px solid var(--ew-border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.export-card__preview-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  padding: 10px 14px 6px;
+}
+
+.export-card__preview-content {
+  padding: 0 14px 12px;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 0.78rem;
+  line-height: 1.7;
+  color: #334155;
+  white-space: pre-wrap;
+  word-break: break-all;
+  margin: 0;
+}
+
+.export-card__preview-more {
+  padding: 8px 14px;
+  font-size: 0.75rem;
+  color: #94a3b8;
+  border-top: 1px solid var(--ew-border);
+  margin: 0;
+}
+
+/* ─── WhatsApp bubble ─────────────────────────────────────────── */
+.export-card__preview--message {
+  background: #efeae2;
+  padding: 16px;
+  border-radius: 10px;
+  border: none;
+}
+
+.whatsapp-bubble {
+  background: #fff;
+  border-radius: 0 12px 12px 12px;
+  padding: 10px 14px 28px;
+  max-width: 340px;
+  position: relative;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+
+.whatsapp-bubble__text {
+  font-family: inherit;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: #111b21;
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.whatsapp-bubble__text b,
+.whatsapp-bubble__text strong {
+  font-weight: 700;
+}
+
+.whatsapp-bubble__time {
+  position: absolute;
+  bottom: 6px;
+  right: 10px;
+  font-size: 0.68rem;
+  color: #8696a0;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.whatsapp-bubble__check {
+  width: 14px;
+  height: 14px;
+  fill: #53bdeb;
+}
+
+/* ─── Buttons ─────────────────────────────────────────────────── */
+.export-card__actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.export-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 140ms ease, filter 160ms ease, background 160ms ease;
+  align-self: flex-start;
+}
+
+.export-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+.export-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.export-btn:not(:disabled):hover {
+  filter: brightness(1.07);
+  transform: translateY(-1px);
+}
+
+.export-btn:not(:disabled):active {
+  transform: translateY(0);
+  filter: brightness(0.96);
+}
+
+.export-btn--pdf {
+  background: #ef4444;
+  color: #fff;
+}
+
+.export-btn--csv {
+  background: #3b82f6;
+  color: #fff;
+}
+
+.export-btn--pptx {
+  background: #e06f23;
+  color: #fff;
+}
+
+.export-btn--whatsapp {
+  background: #25d366;
+  color: #fff;
+}
+
+.export-btn--copy {
+  background: #f1f5f2;
+  color: #334155;
+  border: 1px solid var(--ew-border);
+}
+
+.export-btn--success {
+  background: var(--ew-accent) !important;
+  color: #fff !important;
+}
+
+/* ─── Loading spinner ─────────────────────────────────────────── */
+.export-btn__spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2.5px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: ew-spin 0.7s linear infinite;
+}
+
+@keyframes ew-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ─── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 540px) {
+  .ew-tab {
+    font-size: 0.78rem;
+    padding: 9px 10px;
+    gap: 5px;
+  }
+
+  .export-card {
+    padding: 20px 16px;
+  }
+
+  .export-card__summary {
+    grid-template-columns: 1fr;
+  }
+
+  .export-btn {
+    width: 100%;
+  }
+}

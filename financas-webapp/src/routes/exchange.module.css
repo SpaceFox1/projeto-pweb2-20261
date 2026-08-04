@@ -1,0 +1,5 @@
+.exchangePage { width: min(960px, calc(100% - 40px)); margin: 0 auto; padding: 56px 0; color: var(--text-primary); }
+.header { margin-bottom: 36px; }.header h1 { margin: 5px 0 8px; color: var(--bg-secondary); font-size: clamp(2rem, 5vw, 3rem); line-height: 1.1; letter-spacing: -.04em; }.header > p:last-child { opacity: .7; }
+.eyebrow { color: var(--accent-color); font-size: .78rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.loader { padding: 32px; color: #64748b; text-align: center; }.error { padding: 18px 20px; border: 1px solid rgba(239, 68, 68, .25); border-radius: var(--border-radius); background: rgba(239, 68, 68, .06); color: #b42318; }.error code { font-family: monospace; }
+@media (max-width: 640px) { .exchangePage { width: min(100% - 28px, 960px); padding: 36px 0; } }

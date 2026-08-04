@@ -4,6 +4,7 @@ Esse projeto consiste em duas aplicações:
 
 - `financas-api` (Backend)
 - `financas-webapp` (Frontend, onde será desenvolvido o projeto)
+- `financas-conversor` (microfrontend de câmbio, utilizado no RF07)
 
 Abaixo estão as instruções para executar cada uma delas. Certifique-se de ter o Java 21 e o Node.js instalados em sua máquina.
 
@@ -50,3 +51,15 @@ Cada grupo deve preencher essa seção. Na versão inicial, o projeto é executa
    ```
 
 O frontend estará disponível em `http://localhost:5173`.
+
+## Executando o microfrontend de câmbio (RF07)
+
+Em outro terminal, execute:
+
+```bash
+cd financas-conversor
+npm install
+npm run dev
+```
+
+O módulo fica disponível em `http://localhost:5175`. Com os dois frontends em execução, acesse a rota protegida `http://localhost:5173/exchange`.

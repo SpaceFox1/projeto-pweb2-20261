@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import { store } from './store/store.ts';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router';
 import { AuthLayout, DashboardLayout } from './layouts/index.ts';
-import { LoginPage, RegisterPage, HomePage, TransactionsPage, AddTransactionPage, GoalsPage, SpendingLimitsPage } from './routes/index.ts';
+import { LoginPage, RegisterPage, HomePage, TransactionsPage, AddTransactionPage, GoalsPage, SpendingLimitsPage, ExportPage, ExchangePage } from './routes/index.ts';
 import { ProtectedRoute } from './components/ProtectedRoute.tsx';
 import { NetworkErrorModal } from './components/NetworkErrorModal.tsx';
 import { requestNotificationPermission } from './utils/serviceWorkerCache';
@@ -43,6 +43,8 @@ createRoot(document.getElementById('root')!).render(
             <Route path="/transactions/new" element={<AddTransactionPage />} />
             <Route path="/goals" element={<GoalsPage />} />
             <Route path="/spending-limits" element={<SpendingLimitsPage />} />
+            <Route path="/export" element={<ExportPage />} />
+            <Route path="/exchange" element={<ExchangePage />} />
           </Route>
 
           {/* match any other route - 404*/}

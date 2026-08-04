@@ -163,4 +163,56 @@ O usuário deve conseguir definir limites mensais de gastos por categoria. O sis
 
 ## RF07 - Definido pelo grupo (Etapa 2)
 
-- Implementar como microfrontend
+### Descrição
+
+O usuário deve conseguir converter valores entre diferentes moedas utilizando as cotações mais recentes disponíveis. A funcionalidade deve permitir simulações rápidas de conversão, auxiliando usuários que realizam compras, viagens ou investimentos internacionais. Este requisito deverá ser implementado como um microfrontend, funcionando de forma independente da aplicação principal.
+
+### Detalhes Técnicos
+
+- Implementar como um microfrontend independente, integrado à aplicação principal
+- Tela de conversão (`/exchange`) protegida pelo `ProtectedRoute`
+- Campos do formulário:
+  - Valor a ser convertido;
+  - Moeda de origem;
+  - Moeda de destino.
+- Buscar as cotações por meio de uma API de câmbio
+- Exibir o valor convertido utilizando a cotação mais recente disponível
+- Permitir a inversão das moedas de origem e destino por meio de um botão de troca
+- Exibir a data e hora da última atualização da cotação
+- Criar um thunk `fetchExchangeRates` para consumir a API de câmbio
+- Armazenar as cotações obtidas em um slice `exchangeSlice` do Redux para evitar requisições desnecessárias durante a navegação
+
+### Critérios de Aceitação
+
+- [ ] O usuário consegue converter um valor entre duas moedas disponíveis
+- [ ] O valor convertido é calculado utilizando a cotação mais recente retornada pela API
+- [ ] Não é possível realizar a conversão com campos obrigatórios vazios
+- [ ] O usuário consegue inverter rapidamente as moedas de origem e destino
+- [ ] A tela informa a data e hora da última atualização das cotações
+- [ ] O módulo de cálculo de câmbio é carregado como um microfrontend independente da aplicação principal
+
+---
+## RF08 - Definido pelo grupo (Etapa 2) - Exportador de Dados
+
+### Descrição
+
+O usuário deve conseguir exportar os seus dados financeiros (transações, limites e metas) em diferentes formatos e também ser capaz de enviá-los rapidamente em aplicativos de mensagem e outras redes. A funcionalidade deve atuar de forma independente, oferecendo diferentes opções de manipulação e compartilhamento de dados com uma interface rica. 
+
+### Detalhes Técnicos
+
+- Implementar como um microfrontend independente (`financas-exportador`), integrado à aplicação principal.
+- Tela de ferramentas de dados (`/export`) protegida pelo `ProtectedRoute`.
+- Opções disponíveis na interface modular:
+  - **Exportação em `.pdf`**: (usando `jsPDF` e `jspdf-autotable`), com um relatório detalhado gerado dinamicamente incluindo logo desenhada em API gráfica, gráficos em barra de limites e tabelas customizadas de transações e metas.
+  - **Exportação em `.csv`**: compatível com Excel e Google Sheets, mesclando transações com as metas e limites mensais existentes.
+  - **Compartilhamento (Redes Sociais)**: utilizando texto formatado com emojis organizando saldo, transações, limites e maiores despesas, podendo ser copiado rapidamente ou compartilhado via API nativa do sistema (`navigator.share`).
+- A aplicação principal puxa informações (`transactions`, `goals` e `limits`) do Redux e injeta diretamente nas propriedades do Web Component (`<export-widget>`).
+- O widget renderiza utilizando `IIFE` (Vite Lib Mode) sem afetar o pacote de estilos e lógicas da aplicação raiz.
+
+### Critérios de Aceitação
+
+- [x] A tela possui opções independentes (Tabs) para exportar em PDF, CSV e compartilhar nativamente.
+- [x] O relatório PDF é gerado corretamente e inclui gráficos e sumarizações matemáticas dos módulos, além de estilos.
+- [x] O documento CSV e sua pré-visualização contêm todos os dados do banco, formatando com sucesso arrays complexos.
+- [x] O botão de compartilhamento utiliza API nativa do navegador (`navigator.share`), e uma opção manual via `clipboard.writeText` existe como fallback.
+- [x] A funcionalidade roda através de um microfrontend isolado (`export-widget`) hospedado externamente (via src injection) para simular integração descentralizada.

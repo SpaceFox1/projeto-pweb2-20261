@@ -5,3 +5,5 @@ export { TransactionsPage } from './transactions';
 export { AddTransactionPage } from './addTransaction';
 export { GoalsPage } from './goals';
 export { SpendingLimitsPage } from './spendingLimits';
+export { ExportPage } from './export';
+export { ExchangePage } from './exchange';

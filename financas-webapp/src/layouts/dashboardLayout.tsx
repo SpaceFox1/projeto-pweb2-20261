@@ -106,6 +106,14 @@ export function DashboardLayout(): React.ReactElement {
               <div className={styles.navImg} style={{ maskImage: 'url(/icons/limits.svg)' }} />
               Limites
             </NavLink>
+            <NavLink to="/export" end className={getLinkClass}>
+              <div className={styles.navImg} style={{ maskImage: 'url(/icons/export.svg)' }} />
+              Exportar
+            </NavLink>
+            <NavLink to="/exchange" end className={getLinkClass}>
+              <div className={styles.navImg} style={{ maskImage: 'url(/icons/exchange.svg)' }} />
+              Câmbio
+            </NavLink>
           </nav>
           <button
             onClick={handleLogout}
