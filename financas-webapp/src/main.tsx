@@ -8,6 +8,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router';
 import { AuthLayout, DashboardLayout } from './layouts/index.ts';
 import { LoginPage, RegisterPage, HomePage, TransactionsPage, AddTransactionPage, GoalsPage, SpendingLimitsPage } from './routes/index.ts';
 import { ProtectedRoute } from './components/ProtectedRoute.tsx';
+import { NetworkErrorModal } from './components/NetworkErrorModal.tsx';
 import { requestNotificationPermission } from './utils/serviceWorkerCache';
 
 if ('serviceWorker' in navigator) {
@@ -47,6 +48,7 @@ createRoot(document.getElementById('root')!).render(
           {/* match any other route - 404*/}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+        <NetworkErrorModal />
       </BrowserRouter>
     </Provider>
   </StrictMode>,

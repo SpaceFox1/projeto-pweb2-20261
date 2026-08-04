@@ -1,6 +1,6 @@
-const CACHE_NAME = 'financas-cache-v3';
+const CACHE_NAME = 'financas-cache-v4';
 const OFFLINE_URL = '/offline.html';
-const APP_SHELL_URLS = ['/index.html', OFFLINE_URL];
+const APP_SHELL_URLS = ['/index.html', OFFLINE_URL, '/favicon.svg', '/Logo.png'];
 const API_ORIGIN = 'http://localhost:8080';
 
 function isFinancasApiGet(url) {
@@ -36,6 +36,8 @@ async function offlineNavigationFallback() {
   if (offlinePage) {
     return offlinePage;
   }
+
+  console.log('Offline page not found in cache, falling back to index.html');
 
   const indexPage = await caches.match('/index.html');
   if (indexPage) {
@@ -144,6 +146,28 @@ self.addEventListener('fetch', (event) => {
       event.respondWith(networkFirstWithCache(request));
       return;
     }
+  }
+
+  const isStaticAsset = url.pathname.match(/\.(svg|png|jpg|jpeg|gif|css|js|woff2?|ico)$/i);
+
+  if (isStaticAsset && url.origin === self.location.origin) {
+    event.respondWith(
+      caches.match(request).then((cachedResponse) => {
+        const networkFetch = fetch(request).then((response) => {
+          if (response && response.ok) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
+          }
+          return response;
+        }).catch(() => {
+          // If offline and no cache, just return a 404 or empty response, NOT index.html
+          return new Response('', { status: 404, statusText: 'Offline' });
+        });
+
+        return cachedResponse || networkFetch;
+      })
+    );
+    return;
   }
 
   if (request.mode === 'navigate' && url.origin === self.location.origin) {

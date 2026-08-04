@@ -34,10 +34,24 @@ class ApiService {
       options.body = JSON.stringify(data);
     }
 
-    const response = await fetch(url, options);
+    let response: Response;
+    try {
+      response = await fetch(url, options);
+    } catch {
+      // TypeError: NetworkError when attempting to fetch resource (offline / servidor fora)
+      window.dispatchEvent(new Event('api-network-error'));
+      return new Promise<T>(() => {});
+    }
 
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
+      const errorData = await response.text().then((text) => {
+        try {
+          return JSON.parse(text);
+        } catch {
+          return text;
+        }
+      });
+      console.log('Error response data:', errorData);
       let errorMessage: string;
       if (errorData && typeof errorData === 'object') {
         const errorValues = Object.entries(errorData).filter(([, value]) => typeof value === 'string');

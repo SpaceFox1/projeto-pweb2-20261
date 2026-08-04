@@ -81,7 +81,7 @@ export function AddTransactionPage(): React.ReactElement {
     const currentStatus = spendingStatus.find((item) => item.categoryId === categoryId);
     const projected = getProjectedSpendingStatus(currentStatus, parsedAmount);
 
-    if (!projected || projected.projectedPercent < 100) {
+    if (!projected || projected.projectedPercent < 80) {
       return null;
     }
 
